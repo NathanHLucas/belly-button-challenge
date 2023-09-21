@@ -13,10 +13,10 @@ function init() {
 
     d3.json(url).then((data) => {
         
-        // Create names variable
+        // create names variable
         let names = data.names;
 
-        // Add samples to the drop down menu
+        // add samples to the drop down menu
         names.forEach((id) => {
             dropdownMenu.append("option").text(id).property("value",id);
         });
@@ -65,26 +65,24 @@ function buildBar(sample) {
     // retrieve all of the data
     d3.json(url).then((data) => {
 
-        // retrieve sample data
+        // retrieve sample data and filer for current sample
         let sample_info = data.samples;
-
-        // filter data for current sample only
         let value = sample_info.filter(result => result.id == sample);
 
-        // Get the first index from the array
+        // first index from the array
         let value_data = value[0];
 
-        // Get the otu_ids, lables, and sample values
+        //otu_ids, labels, and sample values as defined in assignment
         let otu_ids = value_data.otu_ids;
         let otu_labels = value_data.otu_labels;
         let sample_values = value_data.sample_values;
 
-        // Set top ten items to display in descending order
+        // display top 10 items in descending order
         let yticks = otu_ids.slice(0,10).map(id => `OTU ${id}`).reverse();
         let xticks = sample_values.slice(0,10).reverse();
         let labels = otu_labels.slice(0,10).reverse();
         
-        // Set up the trace for the bar chart
+        // create the trace for the bar chart
         let trace = {
             x: xticks,
             y: yticks,
@@ -93,12 +91,12 @@ function buildBar(sample) {
             orientation: "h"
         };
 
-        // Setup the layout
+        // setup layout
         let layout = {
             title: "Top 10 OTUs Present"
         };
 
-        // Call Plotly to plot the bar chart
+        // use plotly to plot the bar chart
         Plotly.newPlot("bar", [trace], layout)
     });
 };
@@ -106,24 +104,24 @@ function buildBar(sample) {
 // create function that builds the bubble chart
 function buildBubble(sample) {
 
-    // Use D3 to retrieve all of the data
+    // retrieve all of the data
     d3.json(url).then((data) => {
         
-        // Retrieve all sample data
+        // retrieve sample data
         let sample_info = data.samples;
 
-        // Filter based on the value of the sample
+        // filter based on the value of the sample
         let value = sample_info.filter(result => result.id == sample);
 
-        // Get the first index from the array
+        // first index from the array
         let value_data = value[0];
 
-        // Get the otu_ids, lables, and sample values
+        // otu_ids, lables, and sample values
         let otu_ids = value_data.otu_ids;
         let otu_labels = value_data.otu_labels;
         let sample_values = value_data.sample_values;
         
-        // Set up the trace for bubble chart
+        // create trace for bubble chart
         let trace1 = {
             x: otu_ids,
             y: sample_values,
@@ -136,14 +134,14 @@ function buildBubble(sample) {
             }
         };
 
-        // Set up the layout
+        // create the layout
         let layout = {
             title: "Bacteria Per Sample",
             hovermode: "closest",
             xaxis: {title: "OTU ID"},
         };
 
-        // Call Plotly to plot the bubble chart
+        // use plotly to plot the bubble chart
         Plotly.newPlot("bubble", [trace1], layout)
     });
 };
@@ -152,7 +150,7 @@ function buildBubble(sample) {
 // create function that changes the webpage upon change in dropdown menu (optionChanged defined in HTML)
 function optionChanged(value) { 
 
-    // Call the build functions 
+    // call the build functions 
     buildMeta(value);
     buildBar(value);
     buildBubble(value);
@@ -162,5 +160,5 @@ function optionChanged(value) {
 
 
 
-
+// initialize the webpage
 init();
